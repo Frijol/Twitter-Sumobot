@@ -2,18 +2,28 @@
 var tessel = require('tessel');
 var wifi = require('wifi-cc3000');
 var wifiSettings = {
-  ssid: 'technicallyWifi',
-  password: 'scriptstick',
+  ssid: 'Gaumenkitzel',
+  password: 'Gaumenkitzel',
   timeout: 40
 };
 
 checkConnection();
 
+wifi.on('disconnect', function () {
+  console.log('Disconnected.');
+  checkConnection();
+});
+
 function checkConnection () {
-  if (wifi.isConnected) {
+  if (wifi.isConnected()) {
+    console.log('Connected.');
     main();
   } else {
+    console.log('Connecting...');
     wifi.connect(wifiSettings, function (err, res) {
+      if(err) {
+        console.log('Error connecting:', err);
+      }
       checkConnection();
     });
   }
